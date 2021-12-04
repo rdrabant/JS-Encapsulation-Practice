@@ -1,27 +1,31 @@
 // The array of ingredients the user can add to a sandwich
 //  This will be updated after we fetch.
-let ingredients = [];
+const ingredientList = {
 
-// Updates the DOM to display a list of ingredients
-function renderIngredientList() {
-    const ingredientUl = document.querySelector('.ingredient-list');
+    // The array of ingredients the user can add to a sandwich:
+    //  This will be updated after we fetch.
+    ingredients: [],
 
-    // Empty the ingredientList before adding any content to it.
-    ingredientUl.innerHTML = '';
+    // Updates the DOM to display a list of ingredients:
+    render() {
+        const ingredientList = document.querySelector('.ingredient-list');
 
-    ingredients.forEach(ingredient => {
-        const ingredientDiv = renderIngredientCard(ingredient);
-        ingredientUl.append(ingredientDiv)
-    })
-}
+        // Empty the ingredientList before adding any content to it.
+        ingredientList.innerHTML = '';
+        ingredients.forEach(ingredient => {
+            const ingredientDiv = this.renderIngredientCard(ingredient);
+            ingredientList.append(ingredientDiv)
+        })
+    }
+    ,
 
-// Creates a DIV to display a single ingredient
-function renderIngredientCard(ingredient) {
-    const ingredientCard = document.createElement('div');
-    ingredientCard.className = 'card'
+    // Creates a DIV to display a single ingredient
+    renderIngredientCard(ingredient) {
+        const ingredientCard = document.createElement('div');
+        ingredientCard.className = 'card'
 
-    const sandwichHasIngredient = selectedSandwich.ingredients.includes(ingredient.name);
-    ingredientCard.innerHTML = `
+        const sandwichHasIngredient = selectedSandwich.ingredients.includes(ingredient.name);
+        ingredientCard.innerHTML = `
         <div class="card-body">
             <div class="row g-0">
                 <div class="col-sm-4">
@@ -40,24 +44,31 @@ function renderIngredientCard(ingredient) {
             </div>
         </div>
     `
-    const toggleButton = ingredientCard.querySelector('.toggle-button')
-    toggleButton.addEventListener('click', () => {
-        toggleIngredient(ingredient)
-    })
+        const toggleButton = ingredientCard.querySelector('.toggle-button')
+        toggleButton.addEventListener('click', () => {
+            this.toggleIngredient(ingredient)
+        })
 
-    return ingredientCard
-}
-
-// Runs when the user clicks 'Add' or 'Remove' on a ingredient card
-function toggleIngredient(ingredient) {
-    let sandwichHasIngredient = selectedSandwich.ingredients.includes(ingredient.name);
-    if (sandwichHasIngredient) {
-        selectedSandwich.ingredients = selectedSandwich.ingredients.filter(x => x !== ingredient.name)
-    } else {
-        sandwichHasIngredient = true;
-        selectedSandwich.ingredients.push(ingredient.name)
+        return ingredientCard
     }
-    saveSelectedSandwich()
-    renderCart()
-    renderIngredientList()
+,
+    // Runs when the user clicks 'Add' or 'Remove' on a ingredient card
+    toggleIngredient(ingredient) {
+        let sandwichHasIngredient = selectedSandwich.ingredients.includes(ingredient.name);
+        if (sandwichHasIngredient) {
+            selectedSandwich.ingredients = selectedSandwich.ingredients.filter(x => x !== ingredient.name)
+        } else {
+            sandwichHasIngredient = true;
+            selectedSandwich.ingredients.push(ingredient.name)
+        }
+        saveSelectedSandwich()
+        renderCart()
+        this.render()
+    }
+
 }
+
+
+
+
+
